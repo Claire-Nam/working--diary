@@ -9,7 +9,7 @@ export interface Settings {
 
 export type SettingsUpdateInput = Partial<Omit<Settings, "updatedAt">>;
 
-export interface DairyEntry {
+export interface 
   id: string;
   date: string;
   rawInput: string;

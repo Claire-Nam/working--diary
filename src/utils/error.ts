@@ -11,5 +11,5 @@ export const sendError = (res: Response, status: number, message: string) => {
 };
 
 export const getErrorMessage = (error: unknown, fallback: string): string => {
-  return error instanceof Error ? error.message : fallback;
+  return error instanceof Error ? error.message : `${fallback} 중 오류가 발생했습니다.`;
 };
