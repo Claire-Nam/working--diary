@@ -1,12 +1,11 @@
 # working--diary
 
-- 목적: 일간/주간 업무 보고 작성을 ai를 이용하여 보다 빠르게 작성함과 동시에 일간/주간 업무 보고를 바탕으로 측정가능한 kpi 가이드라인 제시 
-  
+- 목적 및 기능: 일간/주간 업무 보고 작성을 ai를 이용하여 보다 빠르게 작성함과 동시에 일간/주간 업무 보고를 바탕으로 측정가능한 kpi 가이드라인 제시
 - 개발 환경
-  - 언어: Node.js(Javascript)
+  - 백엔드: Node.js(Typescript), Express.js, RESTful API
+  - 라이브러리: uuid, Slack SDK
   - 테스트: vitest, supertest
   - DB: node-json-db
-    
 - 메인 기능
   1. 데일리 업무를 작성하면 ai가 보고용 언어로 변역해서 작성
   2. 요일을 설정하여 해당 요일에는 1주일간 쌓은 데일리 업무를 바탕으로 주간 업무 요약 제시
