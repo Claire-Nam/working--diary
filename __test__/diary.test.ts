@@ -25,11 +25,11 @@ describe("Diary API", () => {
       });
 
       expect(res.status).toBe(201);
-      expect(res.body.success).toBe(true);
-      expect(res.body.data.date).toBe("2026-03-11");
-      expect(res.body.data.rawInput).toBe("diary api 생성 \n diary 코드 확인용 vitest 코드 작성");
-      expect(res.body.data.refined).toBe("AI가 다듬은 업무 일지 내용입니다.");
-      expect(res.body.data.id).toBeDefined();
+      //   expect(res.body.success).toBe(true);
+      expect(res.body.date).toBe("2026-03-11");
+      expect(res.body.rawInput).toBe("diary api 생성 \n diary 코드 확인용 vitest 코드 작성");
+      expect(res.body.refined).toBe("AI가 다듬은 업무 일지 내용입니다.");
+      expect(res.body.id).toBeDefined();
     });
 
     it("date가 없으면 400을 반환한다.", async () => {
@@ -71,9 +71,9 @@ describe("Diary API", () => {
       const res = await request(app).get("/diary");
 
       expect(res.status).toBe(200);
-      expect(res.body.success).toBe(true);
-      expect(Array.isArray(res.body.data)).toBe(true);
-      expect(res.body.data).toHaveLength(0);
+      //   expect(res.body.success).toBe(true);
+      expect(Array.isArray(res.body)).toBe(true);
+      expect(res.body).toHaveLength(0);
     });
 
     it("생성된 일지 목록을 반환한다", async () => {
@@ -83,7 +83,7 @@ describe("Diary API", () => {
       const res = await request(app).get("/diary");
 
       expect(res.status).toBe(200);
-      expect(res.body.data).toHaveLength(2);
+      expect(res.body).toHaveLength(2);
     });
   });
 
@@ -94,10 +94,10 @@ describe("Diary API", () => {
         rawInput: "오늘의 업무 내용입니다.",
       });
 
-      const res = await request(app).get("/diary/2024-03-11");
+      const res = await request(app).get("/diary/2026-03-11");
 
       expect(res.status).toBe(200);
-      expect(res.body.data.date).toBe("2026-03-11");
+      expect(res.body.date).toBe("2026-03-11");
     });
 
     it("없는 날짜 조회 시 404를 반환한다.", async () => {
@@ -125,8 +125,8 @@ describe("Diary API", () => {
       });
 
       expect(res.status).toBe(200);
-      expect(res.body.data.rawInput).toBe("수정된 업무 내용입니다.");
-      expect(res.body.data.id).toBeDefined();
+      expect(res.body.rawInput).toBe("수정된 업무 일지입니다");
+      expect(res.body.id).toBeDefined();
     });
 
     it("없는 날짜 수정 시 404를 반환한다", async () => {

@@ -71,6 +71,7 @@ router.put("/:date", async (req: Request, res: Response) => {
     const { date } = req.params;
     const strDate = String(date);
     const { rawInput } = req.body;
+    console.log(rawInput);
 
     if (!rawInput) {
       return sendError(res, 400, "rawInput은 필수입니다.");
