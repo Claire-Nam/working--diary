@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import settingsRouter from "./routes/settings.route";
+import diaryRouter from "./routes/diary.route";
 
 dotenv.config();
 
@@ -10,6 +11,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 app.use("/settings", settingsRouter);
+app.use("/diary", diaryRouter);
 
 // 헬스체크
 app.get("/health", (req, res) => {
