@@ -57,7 +57,7 @@ export const diaryService = {
     const refined = await aiService.refineDiaryText(rawInput);
 
     const updated: DiaryEntry = {
-      ...diaries[index],
+      ...diaries[index]!,
       rawInput,
       refined,
       updatedAt: new Date().toISOString(),

@@ -40,9 +40,14 @@ router.get("/:date", async (req: Request, res: Response) => {
 router.post("/", async (req: Request, res: Response) => {
   try {
     const { date, rawInput } = req.body;
+    const existing = await diaryService.getDiaryByDate(date);
 
     if (!date || !rawInput) {
-      return sendError(res, 404, "date와 rawInput은 필수입니다.");
+      return sendError(res, 400, "date와 rawInput은 필수입니다.");
+    }
+
+    if (existing) {
+      return sendError(res, 409, "이미 해당 날짜의 일지가 존재합니다");
     }
 
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
@@ -54,7 +59,8 @@ router.post("/", async (req: Request, res: Response) => {
     }
 
     const diary = await diaryService.createDiary(date, rawInput);
-    return res.status(200).json(diary);
+
+    return res.status(201).json(diary);
   } catch (error) {
     return sendError(res, 500, getErrorMessage(error, "일지 생성"));
   }
