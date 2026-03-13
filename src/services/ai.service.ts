@@ -2,6 +2,32 @@ import axios from "axios";
 
 const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 
+const callGemini = async (prompt: string): Promise<string> => {
+  const apiKey = process.env.GEMINI_API_KEY;
+
+  if (!apiKey) {
+    throw new Error("GEMINI_API_KEY가 설정되지 않았습니다.");
+  }
+
+  const response = await axios.post(
+    `${GEMINI_API_URL}?key=${apiKey}`,
+    {
+      contents: [{ parts: [{ text: prompt }] }],
+    },
+    {
+      headers: { "Content-Type": "application/json" },
+    }
+  );
+
+  const text: string = response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+  if (!text) {
+    throw new Error("AI 응답에서 텍스트를 추출할 수 없습니다.");
+  }
+
+  return text.trim();
+};
+
 export const aiService = {
   // 데일리 업무 일지 정제
   async refineDiaryText(rawInput: string): Promise<string> {
@@ -89,5 +115,30 @@ export const aiService = {
     }
 
     return summary.trim();
+  },
+
+  async generateKpiGuide(diaryTexts: string[], weeklySummaries: string[]): Promise<string> {
+    const diarySection = diaryTexts.join("\n\n---\n\n");
+    const summarySection = weeklySummaries.join("\n\n---\n\n");
+
+    const prompt = `
+    아래는 이번 달의 업무 일지와 주간 요약입니다.
+    기록된 업무 내용을 바탕으로 예상 가능한 KPI 가이드라인을 제시해주세요.
+
+    규칙:
+    1. 실제 기록된 업무 내용만 근거로 작성
+    2. 추측성 내용 절대 추가 금지
+    3. KPI 항목별로 구체적인 측정 기준 제시
+    4. 업무용 격식체 사용
+    5. 추가 설명 없이 KPI 내용만 출력
+
+    [이번 달 업무 일지]
+      ${diarySection}
+
+      [주간 요약]
+      ${summarySection}
+    `.trim();
+
+    return callGemini(prompt);
   },
 };
